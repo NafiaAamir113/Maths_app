@@ -1,6 +1,21 @@
 import streamlit as st
 import sympy as sp
 
+def parse_expression(expr):
+    try:
+        # Try to convert the expression to a symbolic expression
+        sym_expr = sp.sympify(expr)
+        return sym_expr
+    except sp.SympifyError:
+        # Return an error message if the input can't be parsed
+        return "Invalid mathematical expression. Please check the syntax."
+
+# Example usage:
+expr = input("Enter your expression: ")
+result = parse_expression(expr)
+print(result)
+
+
 # App title
 st.title("Math Solver App: Linear Algebra, Integration, and Derivatives")
 
