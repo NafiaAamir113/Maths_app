@@ -10,12 +10,6 @@ def parse_expression(expr):
         # Return an error message if the input can't be parsed
         return "Invalid mathematical expression. Please check the syntax."
 
-# Example usage:
-expr = input("Enter your expression: ")
-result = parse_expression(expr)
-print(result)
-
-
 # App title
 st.title("Math Solver App: Linear Algebra, Integration, and Derivatives")
 
@@ -25,7 +19,7 @@ operation = st.sidebar.selectbox(
     ["Linear Algebra", "Integration", "Derivatives"]
 )
 
-# Define the input fields
+# Linear Algebra Section
 if operation == "Linear Algebra":
     st.header("Linear Algebra Solver")
     
@@ -53,6 +47,7 @@ if operation == "Linear Algebra":
         else:
             st.write("Matrix is not square, inverse not possible.")
 
+# Integration Section
 elif operation == "Integration":
     st.header("Integration Solver")
     
@@ -61,11 +56,15 @@ elif operation == "Integration":
     
     if st.button("Solve Integration"):
         x = sp.Symbol(var)
-        func = sp.sympify(expr)
-        result = sp.integrate(func, x)
-        st.write(f"The integral of {expr} with respect to {var} is:")
-        st.latex(result)
+        func = parse_expression(expr)  # Use parse_expression here
+        if isinstance(func, str):  # Check if there was an error in parsing
+            st.error(func)  # Display error if the expression is invalid
+        else:
+            result = sp.integrate(func, x)
+            st.write(f"The integral of {expr} with respect to {var} is:")
+            st.latex(result)
 
+# Derivatives Section
 elif operation == "Derivatives":
     st.header("Derivative Solver")
     
@@ -74,8 +73,11 @@ elif operation == "Derivatives":
     
     if st.button("Solve Derivative"):
         x = sp.Symbol(var)
-        func = sp.sympify(expr)
-        result = sp.diff(func, x)
-        st.write(f"The derivative of {expr} with respect to {var} is:")
-        st.latex(result)
+        func = parse_expression(expr)  # Use parse_expression here
+        if isinstance(func, str):  # Check if there was an error in parsing
+            st.error(func)  # Display error if the expression is invalid
+        else:
+            result = sp.diff(func, x)
+            st.write(f"The derivative of {expr} with respect to {var} is:")
+            st.latex(result)
 
