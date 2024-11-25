@@ -8,7 +8,7 @@ def parse_expression(expr):
         return sym_expr
     except sp.SympifyError:
         # Return an error message if the input can't be parsed
-        return "Invalid mathematical expression. Please check the syntax."
+        return None  # Instead of a string, return None for invalid expressions
 
 # App title
 st.title("Math Solver App: Linear Algebra, Integration, and Derivatives")
@@ -57,8 +57,9 @@ elif operation == "Integration":
     if st.button("Solve Integration"):
         x = sp.Symbol(var)
         func = parse_expression(expr)  # Use parse_expression here
-        if isinstance(func, str):  # Check if there was an error in parsing
-            st.error(func)  # Display error if the expression is invalid
+        
+        if func is None:  # Check if the expression is invalid
+            st.error("Invalid mathematical expression. Please check the syntax.")
         else:
             result = sp.integrate(func, x)
             st.write(f"The integral of {expr} with respect to {var} is:")
@@ -74,10 +75,10 @@ elif operation == "Derivatives":
     if st.button("Solve Derivative"):
         x = sp.Symbol(var)
         func = parse_expression(expr)  # Use parse_expression here
-        if isinstance(func, str):  # Check if there was an error in parsing
-            st.error(func)  # Display error if the expression is invalid
+        
+        if func is None:  # Check if the expression is invalid
+            st.error("Invalid mathematical expression. Please check the syntax.")
         else:
             result = sp.diff(func, x)
             st.write(f"The derivative of {expr} with respect to {var} is:")
             st.latex(result)
-
